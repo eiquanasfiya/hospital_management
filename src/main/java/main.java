@@ -1,10 +1,9 @@
-import userUI.patientSection.Reception;
+import AdminUI.AdminUI;
+import LoginUI.LoginUI;
 
 public class main {
     public static void main(String[] args) {
 //        LoginUI login=new LoginUI();
-//       AdminUI login=new AdminUI();
-        Reception reception = new Reception();
-
+        AdminUI login=new AdminUI();
    }
 }

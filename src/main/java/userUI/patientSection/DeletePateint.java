@@ -1,4 +1,4 @@
 package UserUI.PatientSection;
 
-public class AddPatient {
+public class DeletePateint {
 }

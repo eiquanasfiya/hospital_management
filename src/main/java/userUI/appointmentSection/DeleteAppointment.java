@@ -1,4 +1,4 @@
 package UserUI.AppointmentSection;
 
-public class AddAppointment {
+public class DeleteAppointment {
 }

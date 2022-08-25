@@ -1,4 +1,6 @@
-package adminUI;
+package AdminUI;
+
+import Service.DoctorService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,9 +40,9 @@ public class AddDoctorUI {
         JTextField doctorAddressBox=new JTextField(18);
         JLabel doctorContact=new JLabel("Contact");
         JTextField doctorContactBox=new JTextField(13);
-        JLabel doctorDepartment=new JLabel("Department");
-        JTextField doctorDepartmentBox=new JTextField(13);
-        JLabel doctorExperience=new JLabel("Experience");
+        JLabel doctorFee=new JLabel("Fee");
+        JTextField doctorFeeBox=new JTextField(13);
+        JLabel doctorExperience=new JLabel("Specialization");
         JTextField doctorExperienceBox=new JTextField(13);
 
         backButton.setForeground(Color.WHITE);
@@ -66,9 +68,9 @@ public class AddDoctorUI {
         doctorContact.setFont(new Font("Serif",Font.BOLD,16));
         doctorContactBox.setBounds(530,200,200,30);
 
-        doctorDepartment.setBounds(400,250,300,30);
-        doctorDepartment.setFont(new Font("Serif",Font.BOLD,16));
-        doctorDepartmentBox.setBounds(530,250,200,30);
+        doctorFee.setBounds(400,250,300,30);
+        doctorFee.setFont(new Font("Serif",Font.BOLD,16));
+        doctorFeeBox.setBounds(530,250,200,30);
 
         doctorExperience.setBounds(400,300,300,30);
         doctorExperience.setFont(new Font("Serif",Font.BOLD,16));
@@ -94,6 +96,34 @@ public class AddDoctorUI {
             new DoctorUI();
         });
 
+        addDoctorButton.addActionListener(btn->{
+            String name=doctorNameBox.getText();
+            String contact=doctorContactBox.getText();
+            String address=doctorAddressBox.getText();
+            String specialization=doctorExperienceBox.getText();
+            String fee=doctorFeeBox.getText();
+
+            Boolean searchDoctor = DoctorService.searchDoctorFromAdmin(contact);
+            if (searchDoctor) {
+                JOptionPane.showMessageDialog(frame, " Doctor already Exist");
+            } else {
+
+                if(!name.equalsIgnoreCase("") && !address.equalsIgnoreCase("")
+                        && !specialization.equalsIgnoreCase("")&& !fee.equalsIgnoreCase("")
+                        && !contact.equalsIgnoreCase("")){
+                    DoctorService.addDoctor(name,address,specialization,contact,fee);
+                    JOptionPane.showMessageDialog(frame,"DOCTOR SUCCESSFULLY ADDED");
+                    frame.dispose();
+                }
+                else{
+                    error.setBounds(550,500,300,15);
+                    error.setText("ALL FIELD MUST BE FILL");
+                    error.setForeground(Color.red);
+                }
+            }
+
+        });
+
         topPanel.add(title);
         topPanel.add(backButton);
         sidePanel.add(viewAllDoctors);
@@ -104,8 +134,8 @@ public class AddDoctorUI {
         bottomPanel.add(doctorContact);
         bottomPanel.add(doctorContactBox);
         bottomPanel.add(addDoctorButton);
-        bottomPanel.add(doctorDepartment);
-        bottomPanel.add(doctorDepartmentBox);
+        bottomPanel.add(doctorFee);
+        bottomPanel.add(doctorFeeBox);
         bottomPanel.add(doctorExperience);
         bottomPanel.add(doctorExperienceBox);
         bottomPanel.add(error);

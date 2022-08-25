@@ -1,71 +1,90 @@
 package domain;
 
 public class Patient {
-    private String patientName;
-    private String patientAddress;
-    private String patientContact;
-    private String patientAge;
-    private String patientGender;
-    public Patient(){
+    private int patient_id;
+    private String name;
+    private int age;
+    private String address;
+    private String contact;
+    private String Gender;
 
+    public Patient() {
     }
 
-    public Patient(String patientName, String patientAddress, String patientContact, String patientAge, String patientGender) {
-        this.patientName = patientName;
-        this.patientAddress = patientAddress;
-        this.patientContact = patientContact;
-        this.patientAge = patientAge;
-        this.patientGender = patientGender;
+    public Patient(int patient_id, String name, int age, String address, String contact, String gender) {
+        this.patient_id = patient_id;
+        this.name = name;
+        this.age = age;
+        this.address = address;
+        this.contact = contact;
+        this.Gender = gender;
     }
 
-    public String getPatientName() {
-        return patientName;
+    public Patient(String name, int age, String address, String contact, String gender) {
+        this.name = name;
+        this.age = age;
+        this.address = address;
+        this.contact = contact;
+        this.Gender = gender;
     }
 
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
+    public int getPatient_id() {
+        return this.patient_id;
     }
 
-    public String getPatientAddress() {
-        return patientAddress;
+    public void setPatient_id(int patient_id) {
+        this.patient_id = patient_id;
     }
 
-    public void setPatientAddress(String patientAddress) {
-        this.patientAddress = patientAddress;
+    public String getName() {
+        return this.name;
     }
 
-    public String getPatientContact() {
-        return patientContact;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setPatientContact(String patientContact) {
-        this.patientContact = patientContact;
+    public int getAge() {
+        return this.age;
     }
 
-    public String getPatientAge() {
-        return patientAge;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public void setPatientAge(String patientAge) {
-        this.patientAge = patientAge;
+    public String getAddress() {
+        return this.address;
     }
 
-    public String getPatientGender() {
-        return patientGender;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setPatientGender(String patientGender) {
-        this.patientGender = patientGender;
+    public String getContact() {
+        return this.contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getGender() {
+        return this.Gender;
+    }
+
+    public void setGender(String gender) {
+        this.Gender = gender;
     }
 
     @Override
     public String toString() {
         return "Patient{" +
-                "patientName='" + patientName + '\'' +
-                ", patientAddress='" + patientAddress + '\'' +
-                ", patientContact='" + patientContact + '\'' +
-                ", patientAge='" + patientAge + '\'' +
-                ", patientGender='" + patientGender + '\'' +
+                "patient_id=" + patient_id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", address='" + address + '\'' +
+                ", contact='" + contact + '\'' +
+                ", Gender='" + Gender + '\'' +
                 '}';
     }
 }
