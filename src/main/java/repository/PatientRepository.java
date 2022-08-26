@@ -16,13 +16,14 @@ public class PatientRepository extends BaseConnection {
             st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from patient");
             while(rs.next()){
+                Integer id = Integer.parseInt(rs.getString("id"));
                 String patientName = rs.getString("name");
                 String patientAddress=rs.getString("address");
                 String patientContact=rs.getString("contact");
                 String pateintAge= rs.getString("age");
                 String patientGender= (rs.getString("gender"));
 
-                patient.add(new Patient(patientName,patientAddress,patientContact,pateintAge,patientGender));
+                patient.add(new Patient(id,patientName,patientAddress,patientContact,pateintAge,patientGender));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -63,13 +64,14 @@ public class PatientRepository extends BaseConnection {
             st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from patient where contact = '"+contact+"'");
             while(rs.next()){
+                Integer id = Integer.parseInt("id");
                 String patientName = rs.getString("name");
                 String patientAddress=rs.getString("address");
                 String patientContact=rs.getString("contact");
                 String pateintAge= rs.getString("age");
                 String patientGender= (rs.getString("gender"));
 
-                patient.add(new Patient(patientName,patientAddress,patientContact,pateintAge,patientGender));
+                patient.add(new Patient(id,patientName,patientAddress,patientContact,pateintAge,patientGender));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

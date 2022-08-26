@@ -61,13 +61,14 @@ public class DoctorRepository extends BaseConnection {
             st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from doctor where d_name = '"+doctorName+"'");
             while (rs.next()) {
+                Integer id = Integer.parseInt(rs.getString("id"));
                 String dName = rs.getString("d_name");
                 String contact = rs.getString("contact");
                 String specialization = rs.getString("specialization");
                 String address = rs.getString("address");
                 Double fee = Double.parseDouble(rs.getString("fee"));
 
-                doctors.add(new Doctor(dName,contact,specialization,address,fee));
+                doctors.add(new Doctor(id,dName,contact,specialization,address,fee));
 
             }
         } catch (SQLException throwables) {

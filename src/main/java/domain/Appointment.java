@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 
 public class Appointment {
+    private int id;
     private String appointmentNumber;
     private String date;
     private String time;
@@ -22,7 +23,8 @@ public class Appointment {
     private String patientName;
     private String contact;
 
-    public Appointment(String appointmentNumber,String date, String time, Double serviceCharges, String doctorName, String specialization, Double fee, String patientName, String contact) {
+    public Appointment(int id,String appointmentNumber,String date, String time, Double serviceCharges, String doctorName, String specialization, Double fee, String patientName, String contact) {
+        this.id=id;
         this.appointmentNumber=appointmentNumber;
         this.date = date;
         this.time = time;
