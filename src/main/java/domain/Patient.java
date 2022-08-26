@@ -1,6 +1,7 @@
 package domain;
 
 public class Patient {
+    private int id;
     private String patientName;
     private String patientAddress;
     private String patientContact;
@@ -10,7 +11,8 @@ public class Patient {
 
     }
 
-    public Patient(String patientName, String patientAddress, String patientContact, String patientAge, String patientGender) {
+    public Patient(int id,String patientName, String patientAddress, String patientContact, String patientAge, String patientGender) {
+        this.id=id;
         this.patientName = patientName;
         this.patientAddress = patientAddress;
         this.patientContact = patientContact;

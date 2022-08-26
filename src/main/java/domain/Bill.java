@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 
 public class Bill {
+    private int id;
     private String invoiceNumber;
     private String appointmentNumber;
     private String date;
@@ -25,9 +26,10 @@ public class Bill {
     private String patientAddress;
     private String patientAge;
     private String patientGender;
-    public Bill(String invoiceNumber,String appointmentNumber,String date,String time,String doctorName,
+    public Bill(int id,String invoiceNumber,String appointmentNumber,String date,String time,String doctorName,
                 String doctorsSpecialization, Double doctorFee,Double serviceCharges,String patientName,String patientContact,
                 String patientAddress,String patientAge,String patientGender){
+        this.id=id;
        this.invoiceNumber=invoiceNumber;
        this.appointmentNumber=appointmentNumber;
        this.date=date;

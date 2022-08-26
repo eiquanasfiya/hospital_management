@@ -105,12 +105,12 @@ public class ReciptUi {
         });
 
         pay.addActionListener(btn->{
-            if(paymentBox.getText().replaceAll("\\s","").equals("")){
+            if(paymentBox.getText().replaceAll("\\s","").equals("")||invoiceNumberBox.getText().replaceAll("\\s","").equals("")){
                 error.setBounds(530,400,300,15);
                 error.setText("Must fill all column");
                 error.setForeground(Color.red);
             }
-            else if(Double.parseDouble(paymentBox.getText()) == totalAmt){
+            else if((Double.parseDouble(paymentBox.getText())) == totalAmt){
                 JOptionPane.showMessageDialog(frame,"Payment Successful");
               PatientService.addPatient(patientName,address,contact,age,gender);
                 int patientId = PatientService.getPatientIdByContact(contact);
@@ -120,7 +120,7 @@ public class ReciptUi {
 
             }
             else{
-                error.setBounds(530,350,300,15);
+                error.setBounds(530,400,300,15);
                 error.setText("You enter wrong amount");
                 error.setForeground(Color.red);
             }
@@ -145,6 +145,8 @@ public class ReciptUi {
                     System.out.println("patient contact"+contact);
                     System.out.println("age"+age);
                     System.out.println("gender"+gender);
+                    frame.dispose();
+                    new BillUi(invoiceNumberBox.getText(),appointmentNumber,date,time,doctorNamec,fees,service_charges,totalAmt,patientName,address,contact,age,gender);
                 }
                 else{
                     JOptionPane.showMessageDialog(frame,"Bill Not Added");
