@@ -47,4 +47,30 @@ public class PatientService {
         PatientRepository patientRepository = new PatientRepository();
         return patientRepository.getPatientIdByContact(contact);
     }
+
+    public static Boolean deletebyContact(String contact) {
+        PatientRepository patientRepository=new PatientRepository();
+        return patientRepository.deletebyContact(contact);
+    }
+
+    public static boolean updatePatientChake(String contact) {
+
+        PatientRepository patientRepository=new PatientRepository();
+        Patient patient= patientRepository.getrowbycontact(contact);
+        if(patient==null){
+         return false;
+        }
+        return true;
+    }
+
+    public static Patient updatePatient(String contact) {
+        PatientRepository patientRepository=new PatientRepository();
+        Patient patient=patientRepository.getrowbycontact(contact);
+        return patient;
+    }
+
+    public static boolean UpdatePatient(String name, String address, String contact, String age, String gender, String previousContact) {
+        PatientRepository patientRepository=new PatientRepository();
+        return patientRepository.updatePatient(name,address,contact,age,gender,previousContact);
+    }
 }

@@ -1,6 +1,17 @@
 package domain;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Patient {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private int id;
     private String patientName;
     private String patientAddress;
@@ -60,6 +71,22 @@ public class Patient {
         this.patientGender = patientGender;
     }
 
+
+    public void populate(ResultSet rs){
+        try {
+            this.setId(Integer.parseInt(rs.getString("id")));
+            this.setPatientName(rs.getString("name"));
+            this.setPatientAddress(rs.getString("address"));
+            this.setPatientContact(rs.getString("contact"));
+            this.setPatientAge(rs.getString("age"));
+            this.setPatientGender(rs.getString("gender"));
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
@@ -70,4 +97,5 @@ public class Patient {
                 ", patientGender='" + patientGender + '\'' +
                 '}';
     }
+
 }

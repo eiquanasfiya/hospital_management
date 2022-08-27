@@ -10,28 +10,44 @@ public class AdminUI {
         JLabel title=new JLabel("ADMIN PORTRAL");
 
         JButton adminDoctor = new JButton("DOCTOR");
-        JButton adminStaff = new JButton("STAFF");
+        JButton adminpatient = new JButton("PATIENT");
+        JButton adminReport=new JButton("REPORT");
+        JButton appointment=new JButton("APPOINTMENT");
         JButton logOut=new JButton("LogOut");
 
         title.setBounds(620,120,700,120);
 
         adminDoctor.setBounds(615,300,400,55);
-        adminStaff.setBounds(615,400,400,55);
-        logOut.setBounds(1300,700,160,35);
+        adminpatient.setBounds(615,400,400,55);
+        adminReport.setBounds(615,500,400,55);
+        appointment.setBounds(615,600,400,55);
+        logOut.setBounds(1300,800,160,35);
         title.setFont(new Font("Serif",Font.BOLD,45));
         adminDoctor.setFont(new Font("Serif",Font.BOLD,20));
-        adminStaff.setFont(new Font("Serif",Font.BOLD,20));
+        adminpatient.setFont(new Font("Serif",Font.BOLD,20));
+        adminReport.setFont(new Font("Serif",Font.BOLD,20));
+        appointment.setFont(new Font("Serif",Font.BOLD,20));
         logOut.setFont(new Font("Serif",Font.BOLD,14));
-        adminDoctor.setBackground(Color.GRAY);
-        adminStaff.setBackground(Color.GRAY);
+//        adminDoctor.setBackground(Color.GRAY);
+//        adminStaff.setBackground(Color.GRAY);
         logOut.setBackground(Color.GRAY);
 
         adminDoctor.addActionListener(btn->{
-             new DoctorUI();
+            new DoctorUI();
+            frame.dispose();
         });
-        adminStaff.addActionListener(btn->{
-            new StaffUI();
+        adminpatient.addActionListener(btn->{
+            new AdminPateintUI();
+            frame.dispose();
         });
+        adminReport.addActionListener(btn->{
+//            new Report();
+//            frame.dispose();
+        });
+//        appointment.addActionListener(btn->{
+//            new AdminAppointment();
+//            frame.dispose();
+//        });
 
 
         logOut.addActionListener(btn->{
@@ -45,7 +61,9 @@ public class AdminUI {
 
         frame.add(title);
         frame.add(adminDoctor);
-        frame.add(adminStaff);
+        frame.add(adminpatient);
+        frame.add(adminReport);
+        frame.add(appointment);
         frame.add(logOut);
 
         frame.setLayout(null);

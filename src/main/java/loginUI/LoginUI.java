@@ -1,5 +1,9 @@
 package loginUI;
 
+import adminUI.AdminUI;
+import service.AuthanticationService;
+import userUI.patientSection.Reception;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,6 +34,26 @@ public class LoginUI {
         login.addActionListener(btn->{
             String username= userBox.getText();
             String userPassword=new String(passBox.getPassword());
+            String type= AuthanticationService.loginType(username,userPassword);
+            if(type.equals("user")){
+                frame.dispose();
+               new Reception();
+            }
+            else if(type.equals("admin")){
+                frame.dispose();
+                new AdminUI();
+            }
+            else if(username.replaceAll("\\s","").equals("")||userPassword.equals("")){
+                error.setText("Must be fill all column");
+                error.setForeground(Color.red);
+                error.setBounds(720,360,160,28);
+            }
+            else{
+                error.setText("Invalid user name or password");
+                error.setForeground(Color.red);
+                error.setBounds(720,360,160,28);
+            }
+
 //
 //            if(AuthenticService.AuthenticAdmin(username,userPassword)){
 //                JOptionPane.showMessageDialog(frame,"log-In As A Admin Successfully.");
