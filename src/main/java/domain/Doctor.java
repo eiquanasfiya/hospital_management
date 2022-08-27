@@ -1,14 +1,15 @@
 package domain;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 @Builder
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Doctor {
 
     private int id;
@@ -25,6 +26,20 @@ public class Doctor {
         this.specialization=specialization;
         this.address=address;
         this.fee=fee;
+    }
+    public void populate(ResultSet rs){
+        try {
+            this.setId(Integer.parseInt(rs.getString("id")));
+            this.setName(rs.getString("d_name"));
+            this.setContact(rs.getString("contact"));
+            this.setSpecialization(rs.getString("specialization"));
+            this.setAddress(rs.getString("address"));
+            this.setFee(Double.valueOf(rs.getString("fee")));
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
 
 

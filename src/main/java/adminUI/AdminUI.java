@@ -13,7 +13,7 @@ public class AdminUI {
         JButton adminpatient = new JButton("PATIENT");
         JButton adminReport=new JButton("REPORT");
         JButton appointment=new JButton("APPOINTMENT");
-        JButton logOut=new JButton("LogOut");
+         JButton logOut=new JButton("LogOut");
 
         title.setBounds(620,120,700,120);
 
@@ -36,18 +36,11 @@ public class AdminUI {
             new DoctorUI();
             frame.dispose();
         });
-        adminpatient.addActionListener(btn->{
-            new AdminPateintUI();
+
+        adminReport.addActionListener(btn->{
+            new ReportUI();
             frame.dispose();
         });
-        adminReport.addActionListener(btn->{
-//            new Report();
-//            frame.dispose();
-        });
-//        appointment.addActionListener(btn->{
-//            new AdminAppointment();
-//            frame.dispose();
-//        });
 
 
         logOut.addActionListener(btn->{
@@ -56,7 +49,10 @@ public class AdminUI {
             JOptionPane.showMessageDialog(frame,"log Out Successfully.");
             new LoginUI();
         });
-
+        adminpatient.addActionListener(btn->{
+            new AdminPateintUI();
+            frame.dispose();
+        });
 
 
         frame.add(title);

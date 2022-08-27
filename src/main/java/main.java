@@ -1,4 +1,3 @@
-import adminUI.AdminUI;
 import loginUI.LoginUI;
 import userUI.appointmentSection.BillUi;
 import userUI.patientSection.Reception;

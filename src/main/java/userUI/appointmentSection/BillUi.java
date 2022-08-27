@@ -66,13 +66,9 @@ public class BillUi {
 
 
 
-
         title.setForeground(Color.DARK_GRAY);
         title.setFont(new Font("Serif",Font.BOLD,45));
         printBill.setFont(new Font("Serif",Font.BOLD,14));
-
-
-
 
         title.setBounds(40,60,400,60);
 
