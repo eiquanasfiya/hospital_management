@@ -115,5 +115,27 @@ public class AppointmentRepository extends BaseConnection {
         }
         return id;
     }
+
+    public String getLatestAppointmentNumber() {
+        String appointmentNumber = "";
+        Statement st;
+        try {
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT MAX(appointmentNumber) as appointmentNumber\n" +
+                    "FROM appointment;");
+            while(rs.next()){
+                appointmentNumber = rs.getString("appointmentNumber");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return appointmentNumber;
+    }
 }
 

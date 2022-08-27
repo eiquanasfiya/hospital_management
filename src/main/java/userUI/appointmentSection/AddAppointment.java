@@ -1,5 +1,6 @@
 package userUI.appointmentSection;
 
+import service.AppointmentService;
 import service.DoctorService;
 
 import javax.swing.*;
@@ -34,8 +35,10 @@ public class AddAppointment {
         JButton addAppointmentButton=new JButton("ADD APPOINTMENT");
 
 
+        String latestAppointmentNumber = AppointmentService.getLatestAppointmentNumber();
         JLabel appointmentNumber=new JLabel("Appointment Num");
         JTextField appointmentNumberBox=new JTextField(13);
+        appointmentNumberBox.setText(latestAppointmentNumber);
         JLabel date=new JLabel("Date");
         JTextField dateBox=new JTextField(13);
         JLabel time=new JLabel("Time");
