@@ -11,13 +11,15 @@ import lombok.ToString;
 @ToString
 public class Doctor {
 
+    private int id;
     private String name;
     private String contact;
     private String specialization;
     private String address;
     private Double fee;
 
-    public Doctor(String name,String contact,String specialization, String address,Double fee){
+    public Doctor(int id,String name,String contact,String specialization, String address,Double fee){
+        this.id=id;
         this.name=name;
         this.contact=contact;
         this.specialization=specialization;

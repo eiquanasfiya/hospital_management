@@ -14,8 +14,9 @@ public class AppointmentRepository extends BaseConnection {
         Statement st;
         try {
             st = con.createStatement();
-            ResultSet rs = st.executeQuery("select a.appointmentNumber,a.date, a.time, a.serviceCharges, d.d_name as doctor_name, d.specialization, d.fee, p.name as patient_name, p.contact from appointment a join doctor d on a.doctor_id=d.id join patient p on a.patient_id= p.id");
+            ResultSet rs = st.executeQuery("select a.id,a.appointmentNumber,a.date, a.time, a.serviceCharges, d.d_name as doctor_name, d.specialization, d.fee, p.name as patient_name, p.contact from appointment a join doctor d on a.doctor_id=d.id join patient p on a.patient_id= p.id");
             while (rs.next()) {
+                Integer id = Integer.parseInt(rs.getString("id"));
                 String appointmentNumber = rs.getString("appointmentNumber");
                 String date = rs.getString("date");
                 String time = rs.getString("time");
@@ -27,7 +28,7 @@ public class AppointmentRepository extends BaseConnection {
                 String contact = rs.getString("contact");
 
 
-                appointment.add(new Appointment(appointmentNumber,date, time, serviceCharges, doctorName, specialization, fee, patientName, contact));
+                appointment.add(new Appointment(id,appointmentNumber,date, time, serviceCharges, doctorName, specialization, fee, patientName, contact));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -46,8 +47,9 @@ public class AppointmentRepository extends BaseConnection {
         Statement st;
         try {
             st = con.createStatement();
-            ResultSet rs = st.executeQuery("select a.appointmentNumber,a.date, a.time, a.serviceCharges, d.d_name as doctor_name, d.specialization, d.fee, p.name as patient_name, p.contact from appointment a join doctor d on a.doctor_id=d.id join patient p on a.patient_id= p.id where p.contact= '"+Contact+"';");
+            ResultSet rs = st.executeQuery("select a.id,a.appointmentNumber,a.date, a.time, a.serviceCharges, d.d_name as doctor_name, d.specialization, d.fee, p.name as patient_name, p.contact from appointment a join doctor d on a.doctor_id=d.id join patient p on a.patient_id= p.id where p.contact= '"+Contact+"';");
             while (rs.next()) {
+                Integer id = Integer.parseInt(rs.getString("id"));
                 String appointmentNumber = rs.getString("appointmentNumber");
                 String date = rs.getString("date");
                 String time = rs.getString("time");
@@ -59,7 +61,7 @@ public class AppointmentRepository extends BaseConnection {
                 String contact = rs.getString("contact");
 
 
-                appointment.add(new Appointment(appointmentNumber,date, time, serviceCharges, doctorName, specialization, fee, patientName, contact));
+                appointment.add(new Appointment(id,appointmentNumber,date, time, serviceCharges, doctorName, specialization, fee, patientName, contact));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
