@@ -54,4 +54,9 @@ public class AppointmentService {
         AppointmentRepository appointmentRepository = new AppointmentRepository();
         return appointmentRepository.getAppointmentIdByAppointmentNumber(appointmentNumber);
     }
+
+    public static String getLatestAppointmentNumber() {
+        AppointmentRepository appointmentRepository = new AppointmentRepository();
+        return appointmentRepository.getLatestAppointmentNumber();
+    }
 }
