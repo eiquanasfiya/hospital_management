@@ -7,6 +7,7 @@ import service.PatientService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReciptUi {
@@ -39,9 +40,9 @@ public class ReciptUi {
         JButton backButton = new JButton("Back");
         JButton pay=new JButton("PAY");
 
-
+        Integer randomInvoiceNumber = new Random().nextInt(1000000);
         JLabel invoiceNumber=new JLabel("Invoice Number");
-        JTextField invoiceNumberBox=new JTextField(13);
+        JLabel invoiceNumberBox=new JLabel(randomInvoiceNumber.toString());
         JLabel doctorName=new JLabel("Doctor Name");
         JLabel doctorNameBox=new JLabel(doctorNamec);
         JLabel doctorFee=new JLabel("Fee");

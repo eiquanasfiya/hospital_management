@@ -64,7 +64,7 @@ public class PatientRepository extends BaseConnection {
             st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from patient where contact = '"+contact+"'");
             while(rs.next()){
-                Integer id = Integer.parseInt("id");
+                Integer id = Integer.parseInt(rs.getString("id"));
                 String patientName = rs.getString("name");
                 String patientAddress=rs.getString("address");
                 String patientContact=rs.getString("contact");
@@ -106,4 +106,90 @@ public class PatientRepository extends BaseConnection {
         return id;
     }
 
+    public Boolean deletebyContact(String contact) {
+    Statement st=null;
+    boolean flag=false;
+    try {
+        st=con.createStatement();
+        st.executeUpdate("delete from patient where contact='"+contact+"'");
+        flag=true;
+
+    }catch (SQLException throwables){
+        throwables.printStackTrace();
+        flag=false;
+    }
+    finally {
+        try {
+            con.close();
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+    return flag;
+    }
+
+    public Patient getrowbycontact(String contact) {
+        try{Patient patient=null;
+
+            String  query="select * from patient where contact=\""+contact+"\";";
+            Statement st=con.createStatement();
+            ResultSet rs=st.executeQuery(query);
+            while (rs.next()) {
+                patient = new Patient();
+                patient.populate(rs);
+            }
+            return patient;
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        finally {
+            try {
+                con.close();
+            }catch (SQLException throwables){
+                throwables.printStackTrace();
+            }
+        }
+        return null;
+
+
+    }
+
+    public boolean updatePatient(String name, String address, String contact, String age, String gender, String previousContact) {
+        boolean flag=false;
+        Statement st=null;
+        try {
+            st=con.createStatement();
+            st.executeUpdate("update patient set name= '"+name+"',age = '"+age+"',address=  '"+address+"',contact=  '"+contact+"',gender='"+gender+"' where contact = '"+previousContact+"'");
+            flag=true;
+
+
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+            flag=false;
+        }
+        finally {
+            try {
+                con.close();
+            }catch (SQLException throwables){
+                throwables.printStackTrace();
+            }
+        }
+        return flag;
+    }
 }
+
+
+
+
+
+
+//        st = con.createStatement();
+//        ResultSet rs = st.executeQuery("select * from patient where contact = '"+contact+"'");
+//        while(rs.next()){
+//        String patientName = rs.getString("name");
+//        String patientAddress=rs.getString("address");
+//        String patientContact=rs.getString("contact");
+//        String pateintAge= rs.getString("age");
+//        String patientGender= (rs.getString("gender"));
+//
+//        row.add(new Patient(patientName,patientAddress,patientContact,pateintAge,patientGender));
