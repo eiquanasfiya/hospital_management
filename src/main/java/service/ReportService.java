@@ -26,6 +26,52 @@ public class ReportService {
         return data;
     }
 
+    public static String[][] getMonthlyReportForJTable(int length, String month, String year) {
+        ReportRepository reportRepository = new ReportRepository();
+        List<Report> reports = reportRepository.getMonthlyIncome(month, year);
+        String[][] data = new String[reports.size()][length];
+        for (int row = 0; row < reports.size(); row++) {
+            data[row][0] = reports.get(row).getDate();
+            data[row][1] = reports.get(row).getTime();
+            data[row][2] = reports.get(row).getTotalIncome().toString();
+        }
+        return data;
+    }
+
+
+    public static Boolean searchRecord(String month, String year) {
+        ReportRepository reportRepository = new ReportRepository();
+        List<Report> search = reportRepository.getMonthlyIncome(month, year);
+        if (search.size() != 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public static Double totalIncomeOfMonth(String month, String year) {
+        ReportRepository reportRepository = new ReportRepository();
+        Double i = null;
+
+        if (searchRecord(month, year)) {
+            Double temp = 0.0;
+            List<Report> allReports = reportRepository.getMonthlyIncome(month, year);
+            for (int j = 0; j <= allReports.size() - 1; j++) {
+                for (Report report : reportRepository.getMonthlyIncome(month, year)) {
+                    i = Double.parseDouble(report.getTotalIncome().toString());
+                    temp += i;
+                }
+                return temp;
+            }
+        }
+        return null;
+    }
+
+    public static Integer totalNumberOfPatientByMonth(String month, String year) {
+        ReportRepository reportRepository = new ReportRepository();
+        List<Report> allReports = reportRepository.getMonthlyIncome(month, year);
+        return allReports.size();
+    }
+
 
     public static String[][] getAllReportsByDate(int length, String startDate, String endDate) {
         ReportRepository reportRepository = new ReportRepository();
@@ -47,7 +93,6 @@ public class ReportService {
     public static Double totalincomeofHospital(String startDate, String endDate) {
         ReportRepository reportRepository = new ReportRepository();
         Double i = null;
-
         if (startDate != null && !startDate.equalsIgnoreCase(LocalDate.now().toString()) && endDate != null &&
                 !endDate.equalsIgnoreCase(LocalDate.now().toString())) {
             Double temp = 0.0;
@@ -86,14 +131,4 @@ public class ReportService {
     }
 
 
-
-
-
-
-
-
-
-    public static void main(String[] args) {
-        System.out.println(totalincomeofHospital("2022-11-07","2022-11-07"));
-    }
 }

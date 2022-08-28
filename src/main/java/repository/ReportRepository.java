@@ -57,29 +57,27 @@ public class ReportRepository extends BaseConnection{
     }
 
 
-    public List<Report> getDailyIncome(String startDate, String endDate){
-        List<Report> dailyReports =new ArrayList<>();
+    public List<Report> getMonthlyIncome(String month,String year){
+        List<Report> monthlyReports =new ArrayList<>();
         try {
             Statement st=con.createStatement();
             ResultSet rs=st.executeQuery("select * from report\n" +
-                    "                    left join appointment\n" +
-                    "                    ON report.appointment_id = appointment.id\n" +
-                    "                    left join doctor\n" +
-                    "                    on appointment.doctor_id=doctor.id \n" +
-                    "                    left join patient\n" +
+                    "left join appointment\n" +
+                    "ON report.appointment_id = appointment.id\n" +
+                    "left join doctor\n" +
+                    "on appointment.doctor_id=doctor.id \n" +
+                    "      left join patient\n" +
                     "                    on appointment.patient_id=patient.id\n" +
-                    "\t\t\t\t\tWHERE\n" +
-                    "\t\t\t\t\tdate BETWEEN \n" +
-                    "                    '"+startDate+"' AND '"+endDate+"';");
+                    "   WHERE MONTH(date) = '"+month+"' AND YEAR(date) = '"+year+"';");
             while (rs.next()){
                 Report report=new Report();
                 report.populate(rs);
-                dailyReports.add(report);
+                monthlyReports.add(report);
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-        return dailyReports;
+        return monthlyReports;
 
     }
 

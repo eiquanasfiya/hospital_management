@@ -1,5 +1,7 @@
 package adminUI;
 
+import domain.Doctor;
+import repository.DoctorRepository;
 import service.ReportService;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -11,10 +13,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 public class ReportUI {
-
     public ReportUI() {
         JFrame frame = new JFrame("HOSPITAL MANAGEMENT SYSTEM");
         Container container = frame.getContentPane();
@@ -22,7 +24,7 @@ public class ReportUI {
         JPanel topPanel = new JPanel();
         JPanel bottomPanel = new JPanel();
         JPanel incomePanel1 = new JPanel();
-        JPanel incomePanel2=new JPanel();
+        JPanel incomePanel2 = new JPanel();
         JPanel sidePanel = new JPanel();
 
         topPanel.setLayout(null);
@@ -31,29 +33,51 @@ public class ReportUI {
         incomePanel2.setLayout(null);
         sidePanel.setLayout(null);
 
-        JLabel title=new JLabel("HOSPITAL REPORT");
-        JLabel title2=new JLabel("DAILY INCOME REPORT");
-        JLabel label3=new JLabel("From");
-        JLabel label4=new JLabel("To");
+        JLabel title = new JLabel("HOSPITAL REPORT");
+        JLabel title2 = new JLabel("MONTHLY INCOME REPORT");
+        JLabel label3 = new JLabel("From");
+        JLabel label4 = new JLabel("To");
+        JLabel label5 = new JLabel("Month");
+        JLabel label6 = new JLabel("Year");
+        JLabel label7 = new JLabel("total income =");
+        JLabel label8 = new JLabel("no of patients");
 
-        title.setBounds(450,30,600,50);
+        title.setBounds(450, 30, 600, 50);
         title.setForeground(Color.DARK_GRAY);
-        title.setFont(new Font("Serif",Font.BOLD,60));
-        title2.setBounds(50,30,400,50);
+        title.setFont(new Font("Serif", Font.BOLD, 60));
+        title2.setBounds(20, 30, 400, 50);
         title2.setForeground(Color.DARK_GRAY);
-        title2.setFont(new Font("Serif",Font.BOLD,26));
-        label3.setBounds(600,220,130,27);
-        label4.setBounds(805,220,130,27);
+        title2.setFont(new Font("Serif", Font.BOLD, 24));
+        label3.setBounds(600, 220, 130, 27);
+        label4.setBounds(805, 220, 130, 27);
+        label5.setBounds(30, 120, 130, 27);
+        label6.setBounds(120, 120, 130, 27);
+        label7.setBounds(200, 500, 160, 50);
+        label8.setBounds(200, 520, 160, 50);
+        JTextField incomeMonth = new JTextField();
+        JTextField patientByMonth = new JTextField();
+        incomeMonth.setBounds(290, 513, 60, 20);
+        patientByMonth.setBounds(290, 533, 60, 20);
+        JTextField month = new JTextField("10");
+        JTextField year = new JTextField("2022");
+        month.setBounds(70, 120, 40, 27);
+        year.setBounds(160, 120, 60, 27);
+        JButton monthlyReportBtn = new JButton("Search");
+        monthlyReportBtn.setBounds(250, 120, 100, 27);
+        JLabel error = new JLabel();
 
         JButton backButton = new JButton("Back");
         backButton.setForeground(Color.WHITE);
         backButton.setBackground(Color.lightGray);
-        backButton.setFont(new Font("Serif",Font.BOLD,15));
-        backButton.setBounds(1450,25,100,40);
+        backButton.setFont(new Font("Serif", Font.BOLD, 15));
+        backButton.setBounds(1450, 25, 100, 40);
 
-        backButton.addActionListener(btn->{
+        JButton printBtn = new JButton("Print Current Report");
+        printBtn.setBounds(10, 570, 370, 50);
+
+        backButton.addActionListener(btn -> {
             frame.dispose();
-            new adminUI.AdminUI();
+            new AdminUI();
         });
 
         topPanel.setBackground(Color.GRAY);
@@ -69,24 +93,25 @@ public class ReportUI {
 
 //        AbstractBorder brdr = new TextBubbleBorder(Color.BLACK,2,16,0);
 
-        JLabel totalIncome=new JLabel("Total Income    =");
+        JLabel totalIncome = new JLabel("Total Income    =");
 
 
-
-        totalIncome.setBounds(10,10,200,35);
+        totalIncome.setBounds(10, 10, 200, 35);
         totalIncome.setForeground(Color.DARK_GRAY);
-        totalIncome.setFont(new Font("Serif",Font.BOLD,25));
+        totalIncome.setFont(new Font("Serif", Font.BOLD, 25));
 
-        JLabel totalPatients=new JLabel("Total Patients   =");
-        totalPatients.setBounds(10,50,200,35);
+        JLabel totalPatients = new JLabel("Total Patients   =");
+        totalPatients.setBounds(10, 50, 200, 35);
         totalPatients.setForeground(Color.DARK_GRAY);
-        totalPatients.setFont(new Font("Serif",Font.BOLD,25));
+        totalPatients.setFont(new Font("Serif", Font.BOLD, 25));
 
 
-        JButton searchButton=new JButton("Search");
-        searchButton.setBounds(1030,220,80,30);
+        JButton searchButton = new JButton("Search");
+        searchButton.setBounds(1010, 220, 80, 30);
+        JButton searchBackBtn = new JButton("<");
+        searchBackBtn.setBounds(1130, 220, 50, 30);
 
-///////////////////////////////////////////////////CALENDAR-SECTION///////////////////////////////////
+        ///////////////////////////////////////////////////CALENDAR-SECTION///////////////////////////////////
         Date _dte1 = Date.from(Instant.now());
         UtilDateModel model = new UtilDateModel(_dte1);
         Properties p = new Properties();
@@ -95,7 +120,7 @@ public class ReportUI {
         p.put("text.year", "Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DataLabelFormatter());
-        datePicker.setBounds(650,220,130,27);
+        datePicker.setBounds(650, 220, 130, 27);
         bottomPanel.add(datePicker);
 
         Date _dte2 = Date.from(Instant.now());
@@ -106,88 +131,149 @@ public class ReportUI {
         f.put("text.year", "Year");
         JDatePanelImpl datePanel1 = new JDatePanelImpl(model1, f);
         JDatePickerImpl datePicker1 = new JDatePickerImpl(datePanel1, new DataLabelFormatter());
-        datePicker1.setBounds(830,220,130,27);
+        datePicker1.setBounds(830, 220, 130, 27);
         bottomPanel.add(datePicker1);
 
-        Date selectedValue1= (Date) datePicker.getModel().getValue();
+        Date selectedValue1 = (Date) datePicker.getModel().getValue();
         LocalDate _date1 = selectedValue1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        Date selectedValue2= (Date) datePicker1.getModel().getValue();
+        Date selectedValue2 = (Date) datePicker1.getModel().getValue();
         LocalDate _date2 = selectedValue2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        String date1=_date1.toString();
-        String date2=_date2.toString();
+        String date1 = _date1.toString();
+        String date2 = _date2.toString();
         ///////////////////////////////////ALL _RECORDS///////////////////////////
 
-        String column[]={"Doctor","Doctor Contact","Patient","Patient Contact","Date","Time","Doctor Fee","Total Income"};
-        String data[][] = ReportService.getAllReportsForJTable(column.length,date1,date2);
-        JTable js=new JTable(data,column);
-        JScrollPane sp=new JScrollPane(js);
-        sp.setBounds(0,0,1180,525);
+        String column[] = {"Doctor", "Doctor Contact", "Patient", "Patient Contact", "Date", "Time", "Doctor Fee", "Total Income"};
+        String data[][] = ReportService.getAllReportsForJTable(column.length, date1, date2);
+        JTable js = new JTable(data, column);
+        JScrollPane sp = new JScrollPane(js);
+        sp.setBounds(0, 0, 1180, 525);
         incomePanel2.add(sp);
-/////////////////////////////////////////TOTAL INCOME/////////////////////////////////////////////
-        String val=ReportService.totalincomeofHospital(date1,date2).toString();
+        /////////////////////////////////////////TOTAL INCOME/////////////////////////////////////////////
+        String val = ReportService.totalincomeofHospital(date1, date2).toString();
         System.out.println(val);
-        JTextField tot=new JTextField(val);
-        tot.setBounds(200,10,100,35);
-        tot.setFont(new Font("Serif",Font.BOLD,25));
+        JTextField tot = new JTextField(val);
+        tot.setBounds(200, 10, 100, 35);
+        tot.setFont(new Font("Serif", Font.BOLD, 25));
         tot.setBackground(Color.GRAY);
         tot.setEditable(false);
         tot.setForeground(Color.DARK_GRAY);
         incomePanel1.add(tot);
-//        ////////////////////////////////TOTAL PATIENT/////////////////////////////////////////////////////
-        String patient=ReportService.totalNumberOfPatient(date1,date2).toString();
-        JTextField totPatient=new JTextField(patient);
-        totPatient.setBounds(200,50,100,35);
-        totPatient.setFont(new Font("Serif",Font.BOLD,25));
+        //        ////////////////////////////////TOTAL PATIENT/////////////////////////////////////////////////////
+        String patient = ReportService.totalNumberOfPatient(date1, date2).toString();
+        JTextField totPatient = new JTextField(patient);
+        totPatient.setBounds(200, 50, 100, 35);
+        totPatient.setFont(new Font("Serif", Font.BOLD, 25));
         totPatient.setBackground(Color.GRAY);
         totPatient.setEditable(false);
         totPatient.setForeground(Color.DARK_GRAY);
         incomePanel1.add(totPatient);
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////SEARCH-BUTTON SECTION/////////////////////////////////////////////////////
 
-        searchButton.addActionListener(btn->{
-            Date selectedValue11= (Date) datePicker.getModel().getValue();
+        searchButton.addActionListener(btn -> {
+            Date selectedValue11 = (Date) datePicker.getModel().getValue();
             LocalDate _date11 = selectedValue11.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            Date selectedValue22= (Date) datePicker1.getModel().getValue();
+            Date selectedValue22 = (Date) datePicker1.getModel().getValue();
             LocalDate _date22 = selectedValue22.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            String date11=_date11.toString();
-            String date22=_date22.toString();
+            String date11 = _date11.toString();
+            String date22 = _date22.toString();
             System.out.println(date22);
             System.out.println(date11);
 
+            ///////////////////////////////////////SEARCH RECORD ACCORDING TO DATE///////////////////////////
 
-             ///////////////////////////////////////SEARCH RECORD ACCORDING TO DATE///////////////////////////
-
-                String colum[]={"Doctor","Doctor Contact","Patient","Patient Contact","Date","Time","Doctor Fee","Total Income"};
-                String dataa[][] = ReportService.getAllReportsByDate(colum.length,date11,date22);
-                JTable jt=new JTable(dataa,colum);
-                JScrollPane fp=new JScrollPane(jt);
-                fp.setBounds(0,0,1180,525);
-                incomePanel2.remove(sp);
-                incomePanel2.add(fp);
-        ///////////////////////////////////////TOTAL INCOME ACCORDING TO DATE///////////////////////////
-            String val2=ReportService.totalincomeofHospital(date11,date22).toString();
+            String colum[] = {"Doctor", "Doctor Contact", "Patient", "Patient Contact", "Date", "Time", "Doctor Fee", "Total Income"};
+            String dataa[][] = ReportService.getAllReportsByDate(colum.length, date11, date22);
+            JTable jt = new JTable(dataa, colum);
+            JScrollPane fp = new JScrollPane(jt);
+            fp.setBounds(0, 0, 1180, 525);
+            incomePanel2.remove(sp);
+            incomePanel2.add(fp);
+            ///////////////////////////////////////TOTAL INCOME ACCORDING TO DATE///////////////////////////
+            String val2 = ReportService.totalincomeofHospital(date11, date22).toString();
             System.out.println(val2);
-            JTextField tota=new JTextField(val2);
-            tota.setBounds(200,10,100,35);
-            tota.setFont(new Font("Serif",Font.BOLD,25));
+            JTextField tota = new JTextField(val2);
+            tota.setBounds(200, 10, 100, 35);
+            tota.setFont(new Font("Serif", Font.BOLD, 25));
             tota.setBackground(Color.GRAY);
             tota.setForeground(Color.DARK_GRAY);
             tota.setEditable(false);
             incomePanel1.remove(tot);
             incomePanel1.add(tota);
             ///////////////////////////////////////TOTAL PATIENT ACCORDING TO DATE///////////////////////////
-            String patients=ReportService.totalNumberOfPatient(date11,date22).toString();
+            String patients = ReportService.totalNumberOfPatient(date11, date22).toString();
             System.out.println(patients);
-            JTextField totPatients=new JTextField(patients);
-            totPatients.setBounds(200,50,100,35);
-            totPatients.setFont(new Font("Serif",Font.BOLD,25));
+            JTextField totPatients = new JTextField(patients);
+            totPatients.setBounds(200, 50, 100, 35);
+            totPatients.setFont(new Font("Serif", Font.BOLD, 25));
             totPatients.setBackground(Color.GRAY);
             totPatients.setEditable(false);
             totPatients.setForeground(Color.DARK_GRAY);
             incomePanel1.add(totPatients);
+//            }else {
+//                JOptionPane.showMessageDialog(frame,"You Cannot find Current Day Report Before Closing");
+//            }
+        });
 
+        monthlyReportBtn.addActionListener(btn -> {
+            String monthText = month.getText();
+            String yearText = year.getText();
+            Integer check = Integer.parseInt(month.getText());
+            Integer checkYear = Integer.parseInt(year.getText());
+            System.out.println(monthText);
+            ///////////////////////////////////ALL_Monthly _RECORDS///////////////////////////
+            Boolean searchRec = ReportService.searchRecord(monthText, yearText);
+            if (check <= 12 && check > 0 && checkYear >= 2020 && checkYear < 2999) {
+                if (searchRec) {
+                    incomeMonth.setText(ReportService.totalIncomeOfMonth(monthText, yearText).toString());
+                    patientByMonth.setText(ReportService.totalNumberOfPatientByMonth(monthText, yearText).toString());
+                    incomeMonth.setEditable(false);
+                    incomeMonth.setForeground(Color.DARK_GRAY);
+                    patientByMonth.setEditable(false);
+                    patientByMonth.setForeground(Color.DARK_GRAY);
+                    sidePanel.add(label7);
+                    sidePanel.add(label8);
+                    sidePanel.add(incomeMonth);
+                    sidePanel.add(patientByMonth);
+                    String columnn[] = {"Date", "Time", "Total Amount"};
+                    String datta[][] = ReportService.getMonthlyReportForJTable(columnn.length, monthText, yearText);
+                    JTable jss = new JTable(datta, columnn);
+                    JScrollPane spp = new JScrollPane(jss);
+                    spp.setBounds(0, 200, 390, 300);
+                    sidePanel.add(spp);
+                    JOptionPane.showMessageDialog(frame, "Record Found");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Record Not Found");
+                }
+            } else {
+                error.setBounds(160, 400, 300, 15);
+                error.setText("INVALID MONTH");
+                error.setForeground(Color.red);
+            }
 
+        });
+
+        searchBackBtn.addActionListener(btn -> {
+            frame.dispose();
+            new ReportUI();
+
+        });
+
+        printBtn.addActionListener(btn -> {
+            Date selectedValue11 = (Date) datePicker.getModel().getValue();
+            LocalDate _date11 = selectedValue11.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            Date selectedValue22 = (Date) datePicker1.getModel().getValue();
+            LocalDate _date22 = selectedValue22.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            String date11 = _date11.toString();
+            String date22 = _date22.toString();
+            new PrintReportUI(date11, date22);
+
+//
+//            try{
+//            frame.print();}
+//            catch (Exception e){
+//
+//            }
         });
 
 
@@ -201,13 +287,22 @@ public class ReportUI {
         incomePanel1.add(totalIncome);
         bottomPanel.add(label3);
         bottomPanel.add(label4);
+        sidePanel.add(printBtn);
 
 
         incomePanel1.add(totalPatients);
         topPanel.add(title);
         topPanel.add(backButton);
         sidePanel.add(title2);
-
+        sidePanel.add(label5);
+        sidePanel.add(label6);
+        sidePanel.add(month);
+        sidePanel.add(year);
+        sidePanel.add(monthlyReportBtn);
+        sidePanel.add(error);
+        sidePanel.add(label7);
+        sidePanel.add(label8);
+        bottomPanel.add(searchBackBtn);
 
 
         frame.setLayout(null);
@@ -219,8 +314,4 @@ public class ReportUI {
 
     }
 
-    public static void main(String[] args) {
-        ReportUI reportUI=new ReportUI();
-
-    }
 }
