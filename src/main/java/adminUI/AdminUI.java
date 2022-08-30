@@ -53,6 +53,10 @@ public class AdminUI {
             new AdminPateintUI();
             frame.dispose();
         });
+        appointment.addActionListener(abtn->{
+            new AdminAppointmentUi();
+            frame.dispose();
+        });
 
 
         frame.add(title);

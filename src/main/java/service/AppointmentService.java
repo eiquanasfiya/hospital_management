@@ -1,7 +1,9 @@
 package service;
 
+import domain.Patient;
 import repository.AppointmentRepository;
 import domain.Appointment;
+import repository.PatientRepository;
 
 import java.util.List;
 
@@ -58,5 +60,31 @@ public class AppointmentService {
     public static String getLatestAppointmentNumber() {
         AppointmentRepository appointmentRepository = new AppointmentRepository();
         return appointmentRepository.getLatestAppointmentNumber();
+    }
+
+    public static Boolean appointmentDeletebycontact(String contact) {
+        AppointmentRepository appointmentRepository=new AppointmentRepository();
+        return appointmentRepository.appointmentDeletebycontact(contact);
+    }
+    public static boolean sendAppointmentChake(String contact) {
+
+        AppointmentRepository appointmentRepository=new AppointmentRepository();
+        Appointment appointment= appointmentRepository.sendChakeAppoindmentData(contact);
+        if(appointment==null){
+            return false;
+        }
+        return true;
+    }
+
+    public static Appointment sendAppointment(String contact) {
+        AppointmentRepository appointmentRepository=new AppointmentRepository();
+        Appointment appointment=appointmentRepository.sendChakeAppoindmentData(contact);
+        return appointment;
+    }
+
+
+    public static boolean updateAppointment(String appointmentNumber, String date, String time, int doctor_id, int patient_id,String patientContact) {
+        AppointmentRepository appointmentRepository = new AppointmentRepository();
+        return appointmentRepository.updateAppointment(appointmentNumber,date,time,doctor_id,patient_id,patientContact);
     }
 }
