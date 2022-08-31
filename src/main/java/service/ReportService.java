@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ReportService {
 
-    public static String[][] getAllReportsForJTable(int length, String startDate, String endDate) {
+    public static String[][] getAllReportsForJTable(int length) {
         ReportRepository reportRepository = new ReportRepository();
         List<Report> reports = reportRepository.getAll();
         String[][] data = new String[reports.size()][length];
@@ -93,8 +93,7 @@ public class ReportService {
     public static Double totalincomeofHospital(String startDate, String endDate) {
         ReportRepository reportRepository = new ReportRepository();
         Double i = null;
-        if (startDate != null && !startDate.equalsIgnoreCase(LocalDate.now().toString()) && endDate != null &&
-                !endDate.equalsIgnoreCase(LocalDate.now().toString())) {
+        if (startDate != null && endDate != null ) {
             Double temp = 0.0;
             List<Report> allReports = reportRepository.getAllBetweenTwoDates(startDate, endDate);
             for (int j = 0; j <= allReports.size() - 1; j++) {
@@ -120,8 +119,7 @@ public class ReportService {
 
     public static Integer totalNumberOfPatient(String startDate, String endDate) {
         ReportRepository reportRepository = new ReportRepository();
-        if (startDate != null && !startDate.equalsIgnoreCase(LocalDate.now().toString()) && endDate != null &&
-                !endDate.equalsIgnoreCase(LocalDate.now().toString())) {
+        if(startDate != null && endDate != null) {
             List<Report> allReports = reportRepository.getAllBetweenTwoDates(startDate, endDate);
             return allReports.size();
         } else {

@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -72,8 +73,11 @@ public class ReportUI {
         backButton.setFont(new Font("Serif", Font.BOLD, 15));
         backButton.setBounds(1450, 25, 100, 40);
 
-        JButton printBtn = new JButton("Print Current Report");
+        JButton printBtn = new JButton("Print Report By Date" );
         printBtn.setBounds(10, 570, 370, 50);
+
+        JButton printBtn2=new JButton("Print");
+        printBtn2.setBounds(1000, 470, 100, 30);
 
         backButton.addActionListener(btn -> {
             frame.dispose();
@@ -134,24 +138,17 @@ public class ReportUI {
         datePicker1.setBounds(830, 220, 130, 27);
         bottomPanel.add(datePicker1);
 
-        Date selectedValue1 = (Date) datePicker.getModel().getValue();
-        LocalDate _date1 = selectedValue1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        Date selectedValue2 = (Date) datePicker1.getModel().getValue();
-        LocalDate _date2 = selectedValue2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        String date1 = _date1.toString();
-        String date2 = _date2.toString();
         ///////////////////////////////////ALL _RECORDS///////////////////////////
 
         String column[] = {"Doctor", "Doctor Contact", "Patient", "Patient Contact", "Date", "Time", "Doctor Fee", "Total Income"};
-        String data[][] = ReportService.getAllReportsForJTable(column.length, date1, date2);
+        String data[][] = ReportService.getAllReportsForJTable(column.length);
         JTable js = new JTable(data, column);
         JScrollPane sp = new JScrollPane(js);
-        sp.setBounds(0, 0, 1180, 525);
+        sp.setBounds(0, 0, 1180, 425);
         incomePanel2.add(sp);
+        incomePanel2.add(printBtn2);
         /////////////////////////////////////////TOTAL INCOME/////////////////////////////////////////////
-        String val = ReportService.totalincomeofHospital(date1, date2).toString();
-        System.out.println(val);
+        String val = ReportService.totalincomeofHospital(null, null).toString();
         JTextField tot = new JTextField(val);
         tot.setBounds(200, 10, 100, 35);
         tot.setFont(new Font("Serif", Font.BOLD, 25));
@@ -159,8 +156,9 @@ public class ReportUI {
         tot.setEditable(false);
         tot.setForeground(Color.DARK_GRAY);
         incomePanel1.add(tot);
+
         //        ////////////////////////////////TOTAL PATIENT/////////////////////////////////////////////////////
-        String patient = ReportService.totalNumberOfPatient(date1, date2).toString();
+        String patient = ReportService.totalNumberOfPatient(null, null).toString();
         JTextField totPatient = new JTextField(patient);
         totPatient.setBounds(200, 50, 100, 35);
         totPatient.setFont(new Font("Serif", Font.BOLD, 25));
@@ -175,13 +173,18 @@ public class ReportUI {
             LocalDate _date11 = selectedValue11.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             Date selectedValue22 = (Date) datePicker1.getModel().getValue();
             LocalDate _date22 = selectedValue22.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            Integer dateOneDay=_date11.getDayOfMonth();
+            Integer dateOneMonth=_date11.getDayOfMonth();
+            Integer  dateOneYear=_date11.getYear();
+            Integer dateTwoDay=_date22.getDayOfMonth();
+            Integer dateTwoMonth=_date11.getDayOfMonth();
+            Integer dateTwoYear=_date11.getYear();
+
             String date11 = _date11.toString();
             String date22 = _date22.toString();
-            System.out.println(date22);
-            System.out.println(date11);
 
             ///////////////////////////////////////SEARCH RECORD ACCORDING TO DATE///////////////////////////
-
+            if(dateOneDay<=dateTwoDay && dateOneMonth<=dateTwoMonth && dateOneYear<=dateTwoYear){
             String colum[] = {"Doctor", "Doctor Contact", "Patient", "Patient Contact", "Date", "Time", "Doctor Fee", "Total Income"};
             String dataa[][] = ReportService.getAllReportsByDate(colum.length, date11, date22);
             JTable jt = new JTable(dataa, colum);
@@ -210,10 +213,14 @@ public class ReportUI {
             totPatients.setEditable(false);
             totPatients.setForeground(Color.DARK_GRAY);
             incomePanel1.add(totPatients);
-//            }else {
-//                JOptionPane.showMessageDialog(frame,"You Cannot find Current Day Report Before Closing");
-//            }
+            }else {
+                JOptionPane.showMessageDialog(frame,"Second Date Must be Greater or Equal than first Date");
+            }
         });
+
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
 
         monthlyReportBtn.addActionListener(btn -> {
             String monthText = month.getText();
@@ -252,30 +259,56 @@ public class ReportUI {
             }
 
         });
-
         searchBackBtn.addActionListener(btn -> {
             frame.dispose();
             new ReportUI();
 
         });
 
+        /////////////////////////////////////GET CURRENT MONTH REPORT///////////////////////////////////
+        Integer currentYear=LocalDate.now().getYear();
+        Integer currentMonth=new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue();
+        String curYear=currentYear.toString();
+        String curMonth=currentMonth.toString();
+        System.out.println(curYear);
+        System.out.println(curMonth);
+        String columnnn[] = {"Date", "Time", "Total Amount"};
+        String dattaa[][] = ReportService.getMonthlyReportForJTable(columnnn.length,curMonth,curYear);
+        JTable jsss = new JTable(dattaa, columnnn);
+        JScrollPane sppp = new JScrollPane(jsss);
+        sppp.setBounds(0, 200, 390, 300);
+        sidePanel.add(sppp);
+        incomeMonth.setText(ReportService.totalIncomeOfMonth(curMonth, curYear).toString());
+        patientByMonth.setText(ReportService.totalNumberOfPatientByMonth(curMonth, curYear).toString());
+        incomeMonth.setEditable(false);
+        incomeMonth.setForeground(Color.DARK_GRAY);
+        patientByMonth.setEditable(false);
+        patientByMonth.setForeground(Color.DARK_GRAY);
+        sidePanel.add(incomeMonth);
+        sidePanel.add(patientByMonth);
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+
+//        printBtn2.addActionListener();
+
         printBtn.addActionListener(btn -> {
+
             Date selectedValue11 = (Date) datePicker.getModel().getValue();
             LocalDate _date11 = selectedValue11.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             Date selectedValue22 = (Date) datePicker1.getModel().getValue();
             LocalDate _date22 = selectedValue22.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             String date11 = _date11.toString();
             String date22 = _date22.toString();
+            frame.dispose();
             new PrintReportUI(date11, date22);
 
-//
-//            try{
-//            frame.print();}
-//            catch (Exception e){
-//
-//            }
-        });
 
+        });
+        printBtn2.addActionListener(btn -> {
+
+            frame.dispose();
+            new PrintReportUI();
+        });
 
         container.add(topPanel);
         container.add(sidePanel);
