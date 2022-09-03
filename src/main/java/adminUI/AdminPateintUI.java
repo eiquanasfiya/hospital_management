@@ -121,7 +121,6 @@ public class AdminPateintUI {
             @Override
             public void mouseReleased(MouseEvent e) {
                 String selectedCellValue = (String) jt.getValueAt(jt.getSelectedRow() , jt.getSelectedColumn());
-                System.out.println(selectedCellValue);
                 cell[0] =selectedCellValue;
             }
             @Override

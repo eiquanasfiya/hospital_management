@@ -1,6 +1,7 @@
 package repository;
 
 import domain.Appointment;
+import domain.Patient;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -136,6 +137,78 @@ public class AppointmentRepository extends BaseConnection {
             }
         }
         return appointmentNumber;
+    }
+
+    public Boolean appointmentDeletebycontact(String contact) {
+        boolean flag=true;
+        Statement st=null;
+        try {
+            st=con.createStatement();
+            st.executeUpdate("delete a from appointment a join patient p on a.patient_id = p.id where contact ='"+contact+"'");
+            st.executeUpdate("delete from patient where contact ='"+contact+"'");
+
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+            flag=false;
+        }
+        finally {
+            try {
+                con.close();
+            }catch (SQLException throwables){
+                throwables.printStackTrace();
+            }
+        }
+        return flag;
+    }
+    public Appointment sendChakeAppoindmentData(String contact) {
+        try{Appointment appointment=null;
+
+
+            Statement st=con.createStatement();
+            ResultSet rs=st.executeQuery("select a.appointmentNumber,a.date,a.time,d.d_name,p.name,p.address,p.contact,p.age,p.gender from appointment a join patient p on a.patient_id = p.id join doctor d on a.doctor_id=d.id where p.contact ='"+contact+"'");
+            while (rs.next()) {
+                appointment = new Appointment();
+                appointment.populate(rs);
+
+            }
+            return appointment;
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        finally {
+            try {
+                con.close();
+            }catch (SQLException throwables){
+                throwables.printStackTrace();
+            }
+        }
+        return null;
+
+
+    }
+
+
+    public boolean updateAppointment(String appointmentNumber, String date, String time, int doctor_id, int patient_id,String patientContact) {
+        boolean flag=false;
+        Statement st=null;
+        try {
+            st=con.createStatement();
+            st.executeUpdate("update appointment a join patient p on a.patient_id = p.id set a.appointmentNumber = '"+appointmentNumber+"',a.date = '"+date+"',a.time='"+time+"',a.doctor_id='"+doctor_id+"' where p.contact = '"+patientContact+"';");
+            flag=true;
+
+
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+            flag=false;
+        }
+        finally {
+            try {
+                con.close();
+            }catch (SQLException throwables){
+                throwables.printStackTrace();
+            }
+        }
+        return flag;
     }
 }
 
