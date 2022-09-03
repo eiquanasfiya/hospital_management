@@ -173,49 +173,46 @@ public class ReportUI {
             LocalDate _date11 = selectedValue11.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             Date selectedValue22 = (Date) datePicker1.getModel().getValue();
             LocalDate _date22 = selectedValue22.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            Integer dateOneDay=_date11.getDayOfMonth();
-            Integer dateOneMonth=_date11.getDayOfMonth();
-            Integer  dateOneYear=_date11.getYear();
-            Integer dateTwoDay=_date22.getDayOfMonth();
-            Integer dateTwoMonth=_date11.getDayOfMonth();
-            Integer dateTwoYear=_date11.getYear();
-
             String date11 = _date11.toString();
             String date22 = _date22.toString();
 
             ///////////////////////////////////////SEARCH RECORD ACCORDING TO DATE///////////////////////////
-            if(dateOneDay<=dateTwoDay && dateOneMonth<=dateTwoMonth && dateOneYear<=dateTwoYear){
-            String colum[] = {"Doctor", "Doctor Contact", "Patient", "Patient Contact", "Date", "Time", "Doctor Fee", "Total Income"};
-            String dataa[][] = ReportService.getAllReportsByDate(colum.length, date11, date22);
-            JTable jt = new JTable(dataa, colum);
-            JScrollPane fp = new JScrollPane(jt);
-            fp.setBounds(0, 0, 1180, 525);
-            incomePanel2.remove(sp);
-            incomePanel2.add(fp);
-            ///////////////////////////////////////TOTAL INCOME ACCORDING TO DATE///////////////////////////
-            String val2 = ReportService.totalincomeofHospital(date11, date22).toString();
-            System.out.println(val2);
-            JTextField tota = new JTextField(val2);
-            tota.setBounds(200, 10, 100, 35);
-            tota.setFont(new Font("Serif", Font.BOLD, 25));
-            tota.setBackground(Color.GRAY);
-            tota.setForeground(Color.DARK_GRAY);
-            tota.setEditable(false);
-            incomePanel1.remove(tot);
-            incomePanel1.add(tota);
-            ///////////////////////////////////////TOTAL PATIENT ACCORDING TO DATE///////////////////////////
-            String patients = ReportService.totalNumberOfPatient(date11, date22).toString();
-            System.out.println(patients);
-            JTextField totPatients = new JTextField(patients);
-            totPatients.setBounds(200, 50, 100, 35);
-            totPatients.setFont(new Font("Serif", Font.BOLD, 25));
-            totPatients.setBackground(Color.GRAY);
-            totPatients.setEditable(false);
-            totPatients.setForeground(Color.DARK_GRAY);
-            incomePanel1.add(totPatients);
-            }else {
-                JOptionPane.showMessageDialog(frame,"Second Date Must be Greater or Equal than first Date");
-            }
+
+                if(_date11.compareTo(_date22 )<0){
+                        String colum[] = {"Doctor", "Doctor Contact", "Patient", "Patient Contact", "Date", "Time", "Doctor Fee", "Total Income"};
+                        String dataa[][] = ReportService.getAllReportsByDate(colum.length, date11, date22);
+                        JTable jt = new JTable(dataa, colum);
+                        JScrollPane fp = new JScrollPane(jt);
+                        fp.setBounds(0, 0, 1180, 525);
+                        incomePanel2.remove(sp);
+                        incomePanel2.add(fp);
+                        ///////////////////////////////////////TOTAL INCOME ACCORDING TO DATE///////////////////////////
+                        String val2 = ReportService.totalincomeofHospital(date11, date22).toString();
+                        System.out.println(val2);
+                        JTextField tota = new JTextField(val2);
+                        tota.setBounds(200, 10, 100, 35);
+                        tota.setFont(new Font("Serif", Font.BOLD, 25));
+                        tota.setBackground(Color.GRAY);
+                        tota.setForeground(Color.DARK_GRAY);
+                        tota.setEditable(false);
+                        incomePanel1.remove(tot);
+                        incomePanel1.add(tota);
+                        ///////////////////////////////////////TOTAL PATIENT ACCORDING TO DATE///////////////////////////
+                        String patients = ReportService.totalNumberOfPatient(date11, date22).toString();
+                        System.out.println(patients);
+                        JTextField totPatients = new JTextField(patients);
+                        totPatients.setBounds(200, 50, 100, 35);
+                        totPatients.setFont(new Font("Serif", Font.BOLD, 25));
+                        totPatients.setBackground(Color.GRAY);
+                        totPatients.setEditable(false);
+                        totPatients.setForeground(Color.DARK_GRAY);
+                        incomePanel1.add(totPatients);
+                    }
+                else {
+                    JOptionPane.showMessageDialog(frame,"Second Date Must be Greater than First Date");
+
+                }
+
         });
 
 
@@ -345,6 +342,10 @@ public class ReportUI {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 
+    }
+
+    public static void main(String[] args) {
+        ReportUI reportUI=new ReportUI();
     }
 
 }

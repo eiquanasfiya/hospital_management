@@ -1,9 +1,16 @@
 package adminUI;
 
+import javafx.print.Printer;
 import service.ReportService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.text.MessageFormat;
 
 public class PrintReportUI {
@@ -20,6 +27,23 @@ public PrintReportUI(String dateOne, String dateTwo){
     topPanel.setLayout(null);
     bottomPanel.setLayout(null);
     sidePanel.setLayout(null);
+
+//    public void printComponenet() {
+//        PrinterJob pj = PrinterJob.getPrinterJob();
+//        pj.setJobName(" Print Component ");
+//
+//        pj.setPrintable(new Printable() {
+//            public int print(Graphics pg, PageFormat pf, int pageNum) {
+//                if (pageNum > 0) {
+//                    return Printable.NO_SUCH_PAGE;
+//                }
+//
+//                Graphics2D g2 = (Graphics2D) pg;
+//                g2.translate(pf.getImageableX(), pf.getImageableY());
+//                return Printable.PAGE_EXISTS;
+//            }
+//        });
+//    }
 
 
     topPanel.setBackground(Color.GRAY);
@@ -46,12 +70,13 @@ public PrintReportUI(String dateOne, String dateTwo){
     JTextArea textArea = new JTextArea();
     textArea.setBounds(0,0,1180,300);
     textArea.setFont(new Font("Calibri",Font.BOLD,15));
-    textArea.setText(textArea.getText()+"-------------------------MONTHLY REPORT------------------------------------\n");
-    textArea.setText(textArea.getText()+"FROM          "+dateOne+"\n");
-    textArea.setText(textArea.getText()+"TO             "+dateTwo+"\n");
-    textArea.setText(textArea.getText()+"---------------------------------------------------------------------------\n");
-    textArea.setText(textArea.getText()+"Total Income                   "+ReportService.totalNumberOfPatient(dateOne, dateTwo).toString()+"\n");
-    textArea.setText(textArea.getText()+"No Of totalNumberOfPatient      "+ReportService.totalNumberOfPatient(dateOne,dateTwo)+"\n");
+    textArea.setText(textArea.getText()+"-------------------------MONTHLY REPORT------------------------------------\n"
+    );
+//    textArea.setText(textArea.getText()+"FROM          "+dateOne+"\n");
+//    textArea.setText(textArea.getText()+"TO             "+dateTwo+"\n");
+//    textArea.setText(textArea.getText()+"---------------------------------------------------------------------------\n");
+//    textArea.setText(textArea.getText()+"Total Income                   "+ReportService.totalNumberOfPatient(dateOne, dateTwo).toString()+"\n");
+//    textArea.setText(textArea.getText()+"No Of totalNumberOfPatient      "+ReportService.totalNumberOfPatient(dateOne,dateTwo)+"\n");
 
 
     String colum[] = {"Doctor", "Doctor Contact", "Patient", "Patient Contact", "Date", "Time", "Doctor Fee", "Total Income"};
@@ -65,16 +90,13 @@ public PrintReportUI(String dateOne, String dateTwo){
 
 
     MessageFormat mf = new MessageFormat(textArea.getText());
-//    MessageFormat mf1 = new MessageFormat(textArea.getText()+"FROM          "+dateOne+"\n");
-    MessageFormat mf2 = new MessageFormat(Integer.toString(3));
+   MessageFormat mf1 = new MessageFormat(textArea.getText()+"FROM          "+dateOne+"\n");
+    MessageFormat mf2 = new MessageFormat(Integer.toString(1));
 
 
     title.setForeground(Color.DARK_GRAY);
     title.setFont(new Font("Serif",Font.BOLD,45));
     printReport.setFont(new Font("Serif",Font.BOLD,14));
-
-
-
 
     title.setBounds(40,60,400,60);
 
@@ -84,7 +106,11 @@ public PrintReportUI(String dateOne, String dateTwo){
 
     printReport.addActionListener(btn->{
         try{
+
 //             textArea.print();
+//            frame.print(frame.getGraphics());
+//            bottomPanel.print(bottomPanel.getGraphics());
+         //   bottomPanel.print(bottomPanel.getGraphics());
             jt.print(JTable.PrintMode.FIT_WIDTH,mf,mf2);
 //            jt.print();
 
@@ -94,11 +120,6 @@ public PrintReportUI(String dateOne, String dateTwo){
             System.out.println(e);
         }
     });
-
-
-
-
-
 
     topPanel.add(title);
     topPanel.add(backButton);
@@ -117,7 +138,6 @@ public PrintReportUI(String dateOne, String dateTwo){
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
 
 }
 PrintReportUI(){
@@ -159,7 +179,8 @@ PrintReportUI(){
     JTextArea textArea = new JTextArea();
     textArea.setBounds(0,0,1180,300);
     textArea.setFont(new Font("Calibri",Font.BOLD,15));
-    textArea.setText(textArea.getText()+"-------------------------MONTHLY REPORT------------------------------------\n");
+    textArea.setText(textArea.getText()+"-------------------------MONTHLY REPORT------------------------------------\n" +
+            "");
     String colum[] = {"Doctor", "Doctor Contact", "Patient", "Patient Contact", "Date", "Time", "Doctor Fee", "Total Income"};
 
     String dataa[][] = ReportService.getAllReportsForJTable(colum.length);
@@ -229,3 +250,6 @@ PrintReportUI(){
 
 
 }
+
+
+
